@@ -1,83 +1,133 @@
 
-Activity Title: Managing Authorization in Linux Using Bash Commands
 
-Overview
+#                                                #
+#      MANAGING FILE PERMISSIONS IN LINUX        #
+#                                                #
 
-This activity involved using Linux commands in a Bash shell environment to analyze, manage, and configure file and directory permissions. Managing file permissions is a critical component of system security, as it ensures that unauthorized users cannot access or modify sensitive files and directories. By completing this lab, I gained hands-on experience with Linux commands such as ls, chmod, cd, and others to enforce proper authorization policies.
 
-Scenario
+Project Description
+This activity involved managing file permissions in a Linux environment to ensure that the research team's files and directories comply with organizational security policies. The `projects` directory, containing both regular and hidden files, was reviewed and updated. Permissions were analyzed, and unauthorized access was removed where necessary.
 
-In this scenario, I worked with the /home/researcher2/projects directory, which contains multiple files and subdirectories. The researcher2 user is a member of the research_team group. The primary objective was to audit file and directory permissions and ensure that they adhered to security requirements. Unauthorized access was identified and removed, and permissions were modified to strengthen the overall security of the system.
+The tasks performed included:
+1. Checking file and directory details to identify current permissions.
+2. Interpreting the 10-character permissions string to understand user, group, and other access levels.
+3. Modifying file permissions to remove inappropriate write or execute access.
+4. Updating permissions for hidden files to ensure security while retaining functionality.
+5. Restricting access to specific directories to authorized users only.
 
-The lab tasks involved the following goals:
-1. Check file and directory permissions to identify any incorrect configurations.
-2. Adjust file permissions to ensure that only authorized users have access.
-3. Manage the permissions of hidden files to prevent unintended access.
-4. Configure directory permissions to restrict access to sensitive folders.
+These actions demonstrated the practical use of Linux commands to enforce access controls, which are crucial for protecting sensitive information and maintaining system integrity.
 
-Tasks Completed
+---
 
-Task 1: Check File and Directory Details
-1. Navigated to the /home/researcher2/projects directory using the `cd` command.
-2. Listed the contents of the directory and their permissions using the `ls -l` command.
-   - Observed that the group research_team owned all files and directories.
-   - Permissions for files included read, write, and execute privileges for various owner types.
-3. Checked for hidden files in the directory using `ls -la`.
-   - Identified that the file .project_x.txt was hidden within the directory.
+### Check File and Directory Details
+To analyze the current permissions, I used the `ls -la` command. This command lists all files in the directory, including hidden files, and provides a detailed view of their permissions, ownership, and size.
 
-Task 2: Change File Permissions
-1. Analyzed the permissions of each file to identify incorrect configurations.
-   - Used `ls -l` to identify that project_k.txt had write permissions for "other users," which is a security risk.
-   - Modified the permissions of project_k.txt using `chmod o-w project_k.txt` to remove write access for other users.
-2. Verified that the file project_m.txt should only be accessible to the user (read and write permissions) and not the group or others.
-   - Observed that the group had read permissions, which violated the restriction.
-   - Used `chmod g-r project_m.txt` to remove read permissions for the group.
-3. Re-verified permissions using `ls -l` to confirm the changes were applied successfully.
+**Command Used:**
+```bash
+ls -la
+```
 
-Task 3: Change Permissions of a Hidden File
-1. Checked the permissions of the hidden file .project_x.txt using `ls -la`.
-   - Observed that both the user and the group had write permissions, which was unnecessary for an archived file.
-2. Modified the permissions to allow read-only access for both the user and the group while removing write access.
-   - Applied `chmod u-w,g-w,g+r .project_x.txt` to enforce the changes.
-3. Confirmed the updated permissions using `ls -la`:
-   - The file was now readable by the user and group but not writable.
+**Screenshot Reference:**
+<p align="center"> <img src="https://imgur.com/r7PtypR.png" height="80%" width="80%" alt="Disk Sanitization Steps"/> <br /> <br />
 
-Task 4: Change Directory Permissions
-1. Checked the permissions of the drafts directory within the projects directory using `ls -l`.
-   - Observed that the group research_team had execute permissions, allowing them to access the directory contents.
-2. Removed execute permissions for the group to restrict access, ensuring that only the researcher2 user could access the drafts directory and its contents.
-   - Used `chmod g-x drafts` to apply the restriction.
-3. Verified the updated permissions using `ls -l` to ensure the changes were correctly applied.
+**Output Analysis:**
+- The `projects` directory contained the following:
+  - One subdirectory: `drafts`
+  - One hidden file: `.project_x.txt`
+  - Five project files: `project_k.txt`, `project_t.txt`, `project_m.txt`, etc.
+- The permissions were displayed as 10-character strings, which indicate the file type and access levels for the user, group, and others.
 
-Skills Demonstrated
-1. **File Permission Management:**
-   - Accurately analyzed file and directory permissions using `ls -l` and `ls -la`.
-   - Effectively applied the `chmod` command to modify permissions for specific owner types (user, group, others).
+---
 
-2. **Hidden File Security:**
-   - Identified hidden files using `ls -la` and ensured their permissions were correctly configured.
-   - Applied restrictions to sensitive files to align with security policies.
+### Describe the Permissions String
+The permissions string is crucial for understanding access levels. It is displayed as a 10-character string in the `ls -la` output and consists of the following parts:
+1. **File Type**: The first character is either:
+   - `d` for directory.
+   - `-` for regular files.
+2. **User (Owner) Permissions**: The 2nd-4th characters indicate read (`r`), write (`w`), and execute (`x`) permissions for the file owner.
+3. **Group Permissions**: The 5th-7th characters indicate read (`r`), write (`w`), and execute (`x`) permissions for the group associated with the file.
+4. **Others (Public) Permissions**: The 8th-10th characters indicate read (`r`), write (`w`), and execute (`x`) permissions for others.
 
-3. **Authorization and Access Control:**
-   - Restricted access to files and directories by removing unnecessary write and execute permissions.
-   - Ensured compliance with the principle of least privilege by limiting access to only authorized users.
+**Example:**
+For `project_t.txt`, the permissions string is `-rw-rw-r--`:
+- The first character `-` indicates that it is a regular file.
+- `rw-`: The user (owner) has read and write permissions but not execute.
+- `rw-`: The group has read and write permissions but not execute.
+- `r--`: Others have read-only access.
 
-4. **Practical Command-Line Experience:**
-   - Used essential Linux commands (`cd`, `ls`, `chmod`) to navigate and manage file systems effectively.
-   - Gained proficiency in understanding and configuring file permission strings.
+---
 
-Conclusion
-This activity reinforced my understanding of Linux file and directory permissions and their critical role in maintaining system security. By completing the tasks, I demonstrated my ability to audit and modify permissions to prevent unauthorized access. These skills are fundamental for protecting sensitive information and ensuring secure system operations.
+### Change File Permissions
+The organization prohibits "others" from having write access to files. Upon review, `project_k.txt` was found to have write permissions for others, which violated security policies.
 
-<p align="center">
-<img src="https://imgur.com/r7PtypR.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-<p align="center">
-<img src="https://imgur.com/72dhCxm.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
-<p align="center">
-<img src="https://imgur.com/owhrHOC.png" height="80%" width="80%" alt="Disk Sanitization Steps"/>
-<br />
-<br />
+**Command Used:**
+```bash
+chmod o-w project_k.txt
+```
+
+**Screenshot Reference:**
+<p align="center"> <img src="https://imgur.com/72dhCxm.png" height="80%" width="80%" alt="Disk Sanitization Steps"/> <br /> <br />
+**Verification:**
+The `ls -la` command was used to confirm that the "write" permission for others was successfully removed. The updated permissions for `project_k.txt` are now `-rw-rw-r--`, meaning others only have read access.
+
+**Detailed Explanation:**
+- The `chmod` command modifies file and directory permissions.
+- `o-w` removes write permissions from the "others" category.
+
+---
+
+### Change File Permissions on a Hidden File
+The `.project_x.txt` file is a hidden file (indicated by the `.` prefix) and was archived. It was determined that no one should have write access to this file, but the user and group should retain read permissions.
+
+**Command Used:**
+```bash
+chmod u-w,g-w,g+r .project_x.txt
+```
+
+**Screenshot Reference:**
+<p align="center"> <img src="https://imgur.com/owhrHOC.png" height="80%" width="80%" alt="Disk Sanitization Steps"/> <br /> <br />
+
+**Verification:**
+The `ls -la` command showed the updated permissions as `-r--r-----`, meaning:
+- The user has read permissions but no write or execute permissions.
+- The group has read permissions but no write or execute permissions.
+- Others have no access.
+
+**Detailed Explanation:**
+- `u-w` removes write permissions for the user.
+- `g-w` removes write permissions for the group.
+- `g+r` adds read permissions for the group.
+
+---
+
+### Change Directory Permissions
+The `drafts` directory should only be accessible to the `researcher2` user. It was found that the `research_team` group had execute permissions, allowing them to access the directory. This access was restricted.
+
+**Command Used:**
+```bash
+chmod g-x drafts
+```
+
+**Screenshot Reference:**
+<p align="center"> <img src="https://imgur.com/owhrHOC.png" height="80%" width="80%" alt="Disk Sanitization Steps"/> <br /> <br />
+
+**Verification:**
+The `ls -la` command showed the updated permissions as `drwx-----`, meaning:
+- Only the user has read, write, and execute permissions.
+- The group and others have no permissions.
+
+**Detailed Explanation:**
+- The `chmod g-x` command removes execute permissions for the group, ensuring that only the owner can access the directory.
+
+---
+
+### Summary
+This activity involved a comprehensive review and update of file and directory permissions in the `projects` directory. Key actions included:
+1. Using the `ls -la` command to analyze permissions for all files, including hidden ones.
+2. Understanding the permissions string to identify inappropriate access levels.
+3. Modifying permissions with `chmod` to comply with security policies:
+   - Removing write permissions for others.
+   - Restricting access to hidden files.
+   - Limiting directory access to authorized users only.
+
+By completing these tasks, I demonstrated the ability to analyze and enforce access control policies in a Linux environment, which is essential for protecting sensitive data and maintaining system integrity.
